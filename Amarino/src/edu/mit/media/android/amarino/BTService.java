@@ -622,8 +622,8 @@ public class BTService extends Service
 					// check if buffer contains our alive message
 					//if (response.contains(String.valueOf(IntentEventMapper.ALIVE_FLAG))){
 					if (1==1){	
-						log(response);
-						log("connection is alive");
+						//log(response);
+						//log("connection is alive");
 						// show notification only the first time after reconnect
 						if (lostConnection) {
 							BTHandler.showNotification(
