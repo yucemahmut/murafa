@@ -29,6 +29,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
@@ -50,8 +51,11 @@ import edu.mit.media.android.amarino.db.Collection;
 public class Amarino extends Activity implements OnConnectionChangedListener{
 	
 	public static final String TAG = "Amarino";
-	
+	protected static final String KEY_PAIRED_DEVICES_NUM = "edu.mit.media.android.amarino.paired_devices_num";
+	protected static final String KEY_PAIRED_DEVICE_NAME = "edu.mit.media.android.amarino.paired_device_name";
+	protected static final String KEY_PAIRED_DEVICE_ADDRESS = "edu.mit.media.android.amarino.paired_device_address";
 	private static final int MENU_ABOUT = 23;
+	protected static final int SHOW_DISCOVERED_DEVICES = 55;
 	
 	ImageView bluetoothIV;
 	ImageView eventIV;
@@ -66,7 +70,7 @@ public class Amarino extends Activity implements OnConnectionChangedListener{
 	//int state = BTService.DISCONNECTED;
 	boolean connected = false;
 	boolean reconnecting = false;
-	
+	protected static final String BT_PREFS_NAME = "BT_Preferences_Paired_Devices";
 	// Service connection will get us a handle to our btService
 	ServiceConnection serviceConnection = new ServiceConnection() {
 		
@@ -105,17 +109,28 @@ public class Amarino extends Activity implements OnConnectionChangedListener{
 
 		@Override
 		protected Boolean doInBackground(String... addresses) {
-			try {
-				btService.connect(addresses[0]);
-			} catch (BluetoothException e) {
-				// TODO show error message
-				e.printStackTrace();
-				return false;
-			} catch (Exception e) {
-				// TODO show error message
-				e.printStackTrace();
-				return false;
-			}
+			 
+			SharedPreferences prefs = getSharedPreferences(BT_PREFS_NAME, MODE_PRIVATE);
+			int numPairedDevices = prefs.getInt(KEY_PAIRED_DEVICES_NUM, 0);
+			
+			for (int i=0; i<numPairedDevices; i++){
+				BTDevice d = new BTDevice();
+				d.name = prefs.getString(KEY_PAIRED_DEVICE_NAME + i, "");
+				d.address = prefs.getString(KEY_PAIRED_DEVICE_ADDRESS + i, "");
+				d.state = BTDevice.PAIRED;
+				Log.d(TAG, "paired device stored: " + d.name);
+				try {
+					btService.connect(d.address);
+				} catch (BluetoothException e) {
+					// TODO show error message
+					e.printStackTrace();
+					return false;
+				} catch (Exception e) {
+					// TODO show error message
+					e.printStackTrace();
+					return false;
+				}
+			}			
 			return true;
 		}
 
