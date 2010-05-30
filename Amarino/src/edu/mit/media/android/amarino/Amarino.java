@@ -121,6 +121,14 @@ public class Amarino extends Activity implements OnConnectionChangedListener{
 				Log.d(TAG, "paired device stored: " + d.name);
 				try {
 					btService.connect(d.address);
+					//we want to read data from this device
+					
+					
+					
+					
+					
+					
+					
 				} catch (BluetoothException e) {
 					// TODO show error message
 					e.printStackTrace();
