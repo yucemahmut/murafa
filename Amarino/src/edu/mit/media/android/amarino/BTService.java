@@ -88,7 +88,7 @@ public class BTService extends Service
 	private AliveChecker aliveChecker = new AliveChecker();
 	boolean connectionAlive = false;
 
-	private String response = new String();
+	public String response = new String();
 	private AmarinoPhoneStateListener phoneStateListener;
 	private boolean isPhoneStateListenerRegistered = false;
 	private AmarinoSensorListener sensorListener;
@@ -538,6 +538,8 @@ public class BTService extends Service
 	 */
 	@Override
 	public void receivedData(byte[] b) {
+		
+		response = ""; // clear response buffer from old garbage
 		connectionAlive = true;
 		String data = new String(b);
 
@@ -608,13 +610,13 @@ public class BTService extends Service
 				
 				sendData(IntentEventMapper.ALIVE_MSG); //optimized version
 				
-				try {
+	/*			try {
 					// allow some time to respond
 					Thread.sleep(ALIVE_TIME_OUT);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
-				
+	*/			
 				// since this thread sleeps awhile, we need to check if the user hasn't
 				// disconnected in between, if we wouldn't do that thread would try to reconnect
 				if (!disconnectRequested){
