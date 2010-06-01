@@ -89,7 +89,7 @@ public class ScalesKLX349  {
 							
 							//if the previous weight is higher than the current one, we've got it
 							
-							if (measured_weight_current < measured_weight_previous){
+							if (measured_weight_previous > measured_weight_current){
 								//OK, we've got our final weight
 									return measured_weight_previous;
 									}
