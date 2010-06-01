@@ -116,10 +116,10 @@ public class ScalesKLX349  {
 	private static float processWeightPacket(String s) {
 		// we want to analyze third char of the string, it contains the status of the data
 		
-		int status = 65535 - s.charAt(2);
+		byte[] status = s.getBytes();
 		
 		//now we determine what exactly we are measuring
-		int u2 	= 	(UMask & status) / UDivisor;
+		int u2 	= 	(UMask & status[2]) / UDivisor;
 		//float weight;
 		
 		switch (u2){
@@ -158,10 +158,10 @@ public class ScalesKLX349  {
 		
 		
 		// we want to analyze third char of the string, it contains the status of the data
-		int status = 65535 - s.charAt(2);
+		byte[] status = s.getBytes();
 		
 		//now we determine in what units - KILOGRAM or POUND -  we are measuring weight
-		int u2 	= 	(SMask & status) / SDivisor;
+		int u2 	= 	(SMask & status[2]) / SDivisor;
 		int used_metrics = POUND;
 		
 		switch (u2){
