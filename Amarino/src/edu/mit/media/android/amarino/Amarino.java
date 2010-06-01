@@ -46,6 +46,9 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.vas.android.sensors.ScalesKLX349;
+
 import edu.mit.media.android.amarino.db.Collection;
 
 public class Amarino extends Activity implements OnConnectionChangedListener{
@@ -59,8 +62,8 @@ public class Amarino extends Activity implements OnConnectionChangedListener{
 	public static final int CONNECTED = 1;
 	final char hexCR = 0xd;
 	
-	public float measured_weight_previous;
-	public float measured_weight_current;
+	//public float measured_weight_previous;
+	public float measured_weight;
 	//private StopWatch stopwatch;
 	//protected bt_serial btSerial;
 	
@@ -121,7 +124,7 @@ public class Amarino extends Activity implements OnConnectionChangedListener{
 			int numPairedDevices = prefs.getInt(KEY_PAIRED_DEVICES_NUM, 0);
 			
 			for (int i=0; i<numPairedDevices; i++){
-				measured_weight_previous = 0;
+				//measured_weight_previous = 0;
 				BTDevice d = new BTDevice();
 				d.name = prefs.getString(KEY_PAIRED_DEVICE_NAME + i, "");
 				d.address = prefs.getString(KEY_PAIRED_DEVICE_ADDRESS + i, "");
@@ -129,6 +132,9 @@ public class Amarino extends Activity implements OnConnectionChangedListener{
 				Log.d(TAG, "paired device stored: " + d.name);
 				try {
 					btService.connect(d.address);
+					
+					
+					/*
 							//as long as we are connected, we want to make sure we are reading the weight value
 							//while (btService.state == CONNECTED)
 					
@@ -186,7 +192,11 @@ public class Amarino extends Activity implements OnConnectionChangedListener{
 						}
 					
 					}	
-						Log.d(TAG, "measured weight is " + measured_weight_previous);
+					
+					*/
+					
+					measured_weight = ScalesKLX349.klx349getData (btService);
+						Log.d(TAG, "measured weight is " + measured_weight);
 						
 				} catch (BluetoothException e) {
 					// TODO show error message
