@@ -539,13 +539,14 @@ public class BTService extends Service
 	@Override
 	public void receivedData(byte[] b) {
 		
-		response = ""; // clear response buffer from old garbage
+		//response = ""; // clear response buffer from old garbage
 		connectionAlive = true;
 		String data = new String(b);
 
 		// we collect all received data, so put it into a buffer and check afterwards if
 		// our expected message is somewhere in the buffer
 		response += data;
+		//response = data;
 		log("received data: " + data);
 
 		//Log.d(TAG, "new response is: " + response);

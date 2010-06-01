@@ -61,6 +61,7 @@ public class Amarino extends Activity implements OnConnectionChangedListener{
 	protected static final int SHOW_DISCOVERED_DEVICES = 55;
 	public static final int CONNECTED = 1;
 	final char hexCR = 0xd;
+	private static String input_from_scales;
 	
 	//public float measured_weight_previous;
 	public float measured_weight;
@@ -132,6 +133,7 @@ public class Amarino extends Activity implements OnConnectionChangedListener{
 				Log.d(TAG, "paired device stored: " + d.name);
 				try {
 					btService.connect(d.address);
+					//input_from_scales = btService.response;
 					
 					
 					/*
