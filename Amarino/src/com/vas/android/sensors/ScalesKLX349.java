@@ -11,25 +11,16 @@ public class ScalesKLX349  {
 	private static final char STX = 0x2;
 	private static final char CR = 0xd;
 	
-	//private int BIT0;
-	//private int BIT1;
-	//private int BIT2;
-	//private final int  BIT3 = 0;
-	//private int BIT4;
-	//private int BIT5;
-	//private int BIT6;
-	//private final int BIT7 = 1;
-	
 	private final static int NORMAL_POSITIVE_WEIGHT 	= 	0;
-	private final static int TEST_MODE 				= 	1;
+	private final static int TEST_MODE 					= 	1;
 	private final static int CALIBRATION				=	2;
-	private final static int NORMAL_NEGATIVE_LENGTH	=	3;
+	private final static int NORMAL_NEGATIVE_LENGTH		=	3;
 	private final static int LOW_BATTERY				=	4;
 	private final static int OVERLOAD					=	5;
 	private final static int ZERO_COUNTS_TOO_LOW		=	6;
 	private final static int MINUS_WEIGHT_UNDER_0		=	7;
 	
-	private final static int FORMAT_STANDARD_POUNDS	=	0;
+	private final static int FORMAT_STANDARD_POUNDS		=	0;
 	private final static int FORMAT_POUNDS				=	1;
 	private final static int FORMAT_KG					=	2;
 	
@@ -42,12 +33,13 @@ public class ScalesKLX349  {
 	private final static int POUND						=	0;
 	private final static int KILOGRAM					=	1;
 	
-	private static int DEFAULT_METRICS 				=	POUND;
+	private static int DEFAULT_METRICS 					=	POUND;
 	
 	private static float measured_weight_previous 		= 	0;
 	private static float measured_weight_current;
 	
-	public static final String TAG 				= 	"Scales KLX349";
+	private static boolean DEBUG						= 	true;
+	public static final String TAG 						= 	"Scales KLX349";
 	
 	
 	//public float weight;
@@ -62,7 +54,7 @@ public class ScalesKLX349  {
     
 		while (stopwatch.getElapsedTime() < 50000){
     	
-			System.out.println("Running within the loop: " + stopwatch.getElapsedTime());
+			if (DEBUG) System.out.println("Running within the loop: " + stopwatch.getElapsedTime());
 			//we want to read data from this device
 			//check if we have any data
     	
