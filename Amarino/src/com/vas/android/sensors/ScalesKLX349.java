@@ -24,11 +24,13 @@ public class ScalesKLX349  {
 	private final static int FORMAT_POUNDS				=	1;
 	private final static int FORMAT_KG					=	2;
 	
-	private final static int UMask						=	0x70;
-	private final static int UDivisor					=	0x10;
+	private final static int SLEEP_TIME					=	100;
 	
-	private final static int SMask						=	0x7;
-	private final static int SDivisor					=	0x1;
+	private final static byte UMask						=	0x70;
+	private final static byte UDivisor					=	0x10;
+	
+	private final static byte SMask						=	0x7;
+	private final static byte SDivisor					=	0x1;
 	
 	private final static int POUND						=	0;
 	private final static int KILOGRAM					=	1;
@@ -53,6 +55,13 @@ public class ScalesKLX349  {
 		stopwatch.start();
     
 		while (stopwatch.getElapsedTime() < 50000){
+			
+			try {
+					// allow some time to respond
+					Thread.sleep(SLEEP_TIME);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+				}
     	
 			if (DEBUG) System.out.println("Running within the loop: " + stopwatch.getElapsedTime());
 			//we want to read data from this device
@@ -98,6 +107,8 @@ public class ScalesKLX349  {
 				
 					}
     		
+				btService.response = "";
+				
 				}
     	
 			}	
@@ -110,11 +121,28 @@ public class ScalesKLX349  {
 
 	private static float processWeightPacket(String s) {
 		// we want to analyze third char of the string, it contains the status of the data
+		//HOWEVER, right now I do not understand what data i am receiving from scales, so everything will default to POUND
 		
-		byte[] status = s.getBytes();
+		/*int status0 = (int) s.charAt(0);
+		int status1 = (int) s.charAt(1);
+		int status2 = (int) s.charAt(2);
+		int status3 = (int) s.charAt(3);
+		int status4 = (int) s.charAt(4);
+		int status5 = (int) s.charAt(5);
+		int status6 = (int) s.charAt(6);
+		int status7 = (int) s.charAt(7);
+		int status8 = (int) s.charAt(8);
+		int status = status0 & 0xFF;
+		
+		byte[] b =  s.getBytes();
+		
+		
+		//int bit7 = 
 		
 		//now we determine what exactly we are measuring
-		int u2 	= 	(UMask & status[2]) / UDivisor;
+		int u2 	= 	(UMask & b[0]) / UDivisor;
+		 u2 	= 	(UMask & b[1]) / UDivisor;
+		 u2 	= 	(UMask & b[2]) / UDivisor;
 		//float weight;
 		
 		switch (u2){
@@ -131,6 +159,11 @@ public class ScalesKLX349  {
 		}
 		
 		return 0;
+		*/
+		
+		
+		float weight = getWeight(s); 
+		return weight;
 	}
 
 
@@ -153,10 +186,12 @@ public class ScalesKLX349  {
 		
 		
 		// we want to analyze third char of the string, it contains the status of the data
-		byte[] status = s.getBytes();
+		//HOWEVER, right now I do not understand what data i am receiving from scales, so everything will default to POUND
+		/*
+		char status = s.charAt(0);
 		
 		//now we determine in what units - KILOGRAM or POUND -  we are measuring weight
-		int u2 	= 	(SMask & status[2]) / SDivisor;
+		int u2 	= 	(SMask & status) / SDivisor;
 		int used_metrics = POUND;
 		
 		switch (u2){
@@ -170,7 +205,7 @@ public class ScalesKLX349  {
 		case POUND						:	if (used_metrics == DEFAULT_METRICS) return measured_weight; else {measured_weight = kilo2pound(measured_weight); return measured_weight;} 
 		case KILOGRAM					:	if (used_metrics == DEFAULT_METRICS) return measured_weight; else {measured_weight = pound2kilo(measured_weight); return measured_weight;}	
 		}
-		
+		*/
 		return measured_weight;
 		
 	}

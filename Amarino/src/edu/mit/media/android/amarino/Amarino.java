@@ -133,72 +133,16 @@ public class Amarino extends Activity implements OnConnectionChangedListener{
 				Log.d(TAG, "paired device stored: " + d.name);
 				try {
 					btService.connect(d.address);
-					//input_from_scales = btService.response;
 					
-					
-					/*
-							//as long as we are connected, we want to make sure we are reading the weight value
-							//while (btService.state == CONNECTED)
-					
-					//we do not want to do this indefinitely
-					StopWatch stopwatch = new StopWatch();
-			        stopwatch.start();
-					
-					while (stopwatch.getElapsedTime() < 50000)
-					{
-						System.out.println("Running within the loop: " + stopwatch.getElapsedTime());
-						//we want to read data from this device
-						
-						//check if we have any data
-						if (btService.response.contains(String.valueOf(hexCR))){
-							//let see if we have any non-zero values
-							//first, we split the read data in chunks
-							String[] weights = btService.response.split(String.valueOf(hexCR));
-						
-							//loop through the array to verify the weight
-							for (int array_length = 0; array_length < weights.length; array_length++ ){
-								//we want to make sure we've captured whole weight packet
-								
-								if (weights[array_length].length() == 9){
-									//we need to get rid of all zeroes 0.000
-									if (weights[array_length].contains(String.valueOf("000.0"))){
-											//do nothing
-									}else{
-							
-										try
-										{
-											//measured_weight_current = Float.valueOf(weights[array_length].substring(4,8).trim()).floatValue();
-											measured_weight_current = Float.parseFloat(weights[array_length].substring(4,8));
-											Log.e(TAG, "measured weight is " + measured_weight_current + "recorded weight " + weights[array_length]);
-										}
-										catch (NumberFormatException nfe)
-										{
-											System.out.println("NumberFormatException: " + nfe.getMessage());
-										}
-								
-										//now we have our weight.
-										//if weight is not zero, we need to compare it with previous measurement, as we want it to be less then previous, so that we capture maximum weight
-										if (measured_weight_current < measured_weight_previous){
-										//OK, we've got our final weight
-											break;
-										}else{
-											measured_weight_previous = measured_weight_current;
-										}
-								
-									}
-									
-								}
-																					
-							}
-					
-						}
-					
-					}	
-					
-					*/
 					
 					measured_weight = ScalesKLX349.klx349getData (btService);
 						Log.d(TAG, "measured weight is " + measured_weight);
+						
+						
+						
+							btService.disconnect(true);
+																						
+						
 						
 				} catch (BluetoothException e) {
 					// TODO show error message

@@ -89,6 +89,7 @@ public class BTService extends Service
 	boolean connectionAlive = false;
 
 	public String response = new String();
+	//public byte[] response ;
 	private AmarinoPhoneStateListener phoneStateListener;
 	private boolean isPhoneStateListenerRegistered = false;
 	private AmarinoSensorListener sensorListener;
@@ -547,7 +548,7 @@ public class BTService extends Service
 		// our expected message is somewhere in the buffer
 		response += data;
 		//response = data;
-		log("received data: " + data);
+		log("received data: " + response);
 
 		//Log.d(TAG, "new response is: " + response);
 	}
