@@ -58,7 +58,7 @@ public class ScalesKLX349  {
 			//we want to read data from this device
 			//check if we have any data
     	
-			if (btService.response.contains(String.valueOf(CR))){
+			if (btService.response.contains(String.valueOf(STX))){
     		    	
 				//OK, we have something to play with
 				//we will split the string into segments that starts with STX
@@ -73,15 +73,18 @@ public class ScalesKLX349  {
 					//we want to verify that the packet length is 9 chars and it ends with CR, otherwise we discard the packet
 				
 					if (weights[array_length].length() == 9){
+						
 						//we want to verify that the packet ends with CR, otherwise we discard the packet
 					
 						if (weights[array_length].contains(String.valueOf(CR))){
+							
 							//this packet has the right data and we want to analyze it
 							measured_weight_current = processWeightPacket(weights[array_length]);
 							
 							//if the previous weight is higher than the current one, we've got it
 							
 							if (measured_weight_previous > measured_weight_current){
+								
 								//OK, we've got our final weight
 									return measured_weight_previous;
 									}
