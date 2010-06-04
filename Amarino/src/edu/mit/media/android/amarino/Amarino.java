@@ -136,6 +136,7 @@ public class Amarino extends Activity implements OnConnectionChangedListener{
 					
 					
 					measured_weight = ScalesKLX349.klx349getData (btService);
+					
 						Log.d(TAG, "measured weight is " + measured_weight);
 						
 						
