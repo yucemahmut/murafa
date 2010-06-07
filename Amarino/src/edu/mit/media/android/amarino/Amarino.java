@@ -47,7 +47,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.vas.android.http_post.ServerPost;
 import com.vas.android.sensors.ScalesKLX349;
+import com.vas.android.user.UserProfile;
 
 import edu.mit.media.android.amarino.db.Collection;
 
@@ -61,7 +63,10 @@ public class Amarino extends Activity implements OnConnectionChangedListener{
 	protected static final int SHOW_DISCOVERED_DEVICES = 55;
 	public static final int CONNECTED = 1;
 	final char hexCR = 0xd;
-	private static String input_from_scales;
+	private static final String Separator = "@";
+	
+	//private static String input_from_scales;
+	private static String data_to_send;
 	
 	//public float measured_weight_previous;
 	public float measured_weight;
@@ -136,15 +141,12 @@ public class Amarino extends Activity implements OnConnectionChangedListener{
 					
 					
 					measured_weight = ScalesKLX349.klx349getData (btService);
-					
-						Log.d(TAG, "measured weight is " + measured_weight);
-						
-						
-						
+							Log.d(TAG, "measured weight is " + measured_weight);
 							btService.disconnect(true);
-																						
-						
-						
+							data_to_send =new Float (measured_weight).toString();
+							data_to_send = data_to_send + Separator + d.address + Separator + d.name + Separator + UserProfile.UserName();
+							ServerPost.sendGWSYdata(data_to_send);
+										
 				} catch (BluetoothException e) {
 					// TODO show error message
 					e.printStackTrace();
