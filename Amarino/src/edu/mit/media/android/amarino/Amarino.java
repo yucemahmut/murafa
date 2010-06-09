@@ -128,6 +128,8 @@ public class Amarino extends Activity implements OnConnectionChangedListener{
 			 
 			SharedPreferences prefs = getSharedPreferences(BT_PREFS_NAME, MODE_PRIVATE);
 			int numPairedDevices = prefs.getInt(KEY_PAIRED_DEVICES_NUM, 0);
+			//run infinite loop
+			while (1==1){
 			
 			for (int i=0; i<numPairedDevices; i++){
 				//measured_weight_previous = 0;
@@ -150,14 +152,15 @@ public class Amarino extends Activity implements OnConnectionChangedListener{
 				} catch (BluetoothException e) {
 					// TODO show error message
 					e.printStackTrace();
-					return false;
+					//return false;
 				} catch (Exception e) {
 					// TODO show error message
 					e.printStackTrace();
-					return false;
+					//return false;
 				}
-			}			
-			return true;
+			}
+			}	
+			//return true;
 		}
 
 		@Override

@@ -95,7 +95,10 @@ public class ScalesKLX349  {
 							if (measured_weight_previous > measured_weight_current){
 								
 								//OK, we've got our final weight
-									return measured_weight_previous;
+									btService.response = "";
+									measured_weight_current = measured_weight_previous;
+									measured_weight_previous = 0;
+									return measured_weight_current;
 									}
 										else{
 											measured_weight_previous = measured_weight_current;
