@@ -4,7 +4,6 @@ package com.vas.android.http_post;
 
 import android.app.Activity;
 import android.os.Handler;
-import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
 
@@ -12,7 +11,7 @@ public class ServerPost extends Activity{
 	
 		
 		public static void sendGWSYdata(String s) {
-			Looper.prepare();
+			//Looper.prepare();
 			Handler handler = new Handler() {
 				public void handleMessage(Message message) {
 					switch (message.what) {

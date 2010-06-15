@@ -185,13 +185,17 @@ public abstract class BTActivity extends ListActivity
 		// are found and add them to the persistent list
 		// delete should only happen on user intention
 		for (int i=0; i<numPairedDevices; i++){
-			edit.remove(KEY_PAIRED_DEVICE_NAME + i);
-			edit.remove(KEY_PAIRED_DEVICE_ADDRESS + i);
+			
+			
+			//TODO actually, we do not want to remove previously paired devices
+			
+			//edit.remove(KEY_PAIRED_DEVICE_NAME + i);
+			//edit.remove(KEY_PAIRED_DEVICE_ADDRESS + i);
 		}
 		edit.commit();
 		
 		// generate new list of devices
-		numPairedDevices = 0;
+		//numPairedDevices = 0;
 		//discoveredDevices.clear();
 		for (int i = 0; i<devices.size(); i++){
 			// update and store paired devices

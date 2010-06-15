@@ -22,7 +22,6 @@
 */
 package edu.mit.media.android.amarino;
 
-import it.gerdavax.android.bluetooth.BluetoothException;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ComponentName;
@@ -36,6 +35,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
+import android.os.Looper;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -47,9 +47,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.vas.android.http_post.ServerPost;
-import com.vas.android.sensors.ScalesKLX349;
-import com.vas.android.user.UserProfile;
+import com.vas.android.MainGWSY.MainLoop;
 
 import edu.mit.media.android.amarino.db.Collection;
 
@@ -62,14 +60,14 @@ public class Amarino extends Activity implements OnConnectionChangedListener{
 	private static final int MENU_ABOUT = 23;
 	protected static final int SHOW_DISCOVERED_DEVICES = 55;
 	public static final int CONNECTED = 1;
-	final char hexCR = 0xd;
-	private static final String Separator = "@";
+	//final char hexCR = 0xd;
+	//private static final String Separator = "@";
 	
 	//private static String input_from_scales;
-	private static String data_to_send;
+	//private static String data_to_send;
 	
 	//public float measured_weight_previous;
-	public float measured_weight;
+	//public float measured_weight;
 	//private StopWatch stopwatch;
 	//protected bt_serial btSerial;
 	
@@ -129,7 +127,13 @@ public class Amarino extends Activity implements OnConnectionChangedListener{
 			SharedPreferences prefs = getSharedPreferences(BT_PREFS_NAME, MODE_PRIVATE);
 			int numPairedDevices = prefs.getInt(KEY_PAIRED_DEVICES_NUM, 0);
 			//run infinite loop
-			while (1==1){
+			Looper.prepare();
+			
+			boolean startGWSY = MainLoop.Start_GWSY(prefs, numPairedDevices);
+			return true;
+			
+			
+			/*while (1==1){
 			
 			for (int i=0; i<numPairedDevices; i++){
 				//measured_weight_previous = 0;
@@ -147,6 +151,7 @@ public class Amarino extends Activity implements OnConnectionChangedListener{
 							btService.disconnect(true);
 							data_to_send =new Float (measured_weight).toString();
 							data_to_send = data_to_send + Separator + d.address + Separator + d.name + Separator + UserProfile.UserName();
+							
 							ServerPost.sendGWSYdata(data_to_send);
 										
 				} catch (BluetoothException e) {
@@ -161,6 +166,8 @@ public class Amarino extends Activity implements OnConnectionChangedListener{
 			}
 			}	
 			//return true;
+			 
+			 */
 		}
 
 		@Override
