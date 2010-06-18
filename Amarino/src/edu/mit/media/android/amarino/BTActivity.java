@@ -177,6 +177,7 @@ public abstract class BTActivity extends ListActivity
 	public void scanCompleted(ArrayList<String> devices) {
 		
 		// delete previous list of paired devices
+		//Actually we are not doing this
 		SharedPreferences prefs = getSharedPreferences(BT_PREFS_NAME, MODE_PRIVATE);
 		Editor edit = prefs.edit();
 
@@ -192,16 +193,23 @@ public abstract class BTActivity extends ListActivity
 			//edit.remove(KEY_PAIRED_DEVICE_NAME + i);
 			//edit.remove(KEY_PAIRED_DEVICE_ADDRESS + i);
 		}
-		edit.commit();
+		//edit.commit();
 		
 		// generate new list of devices
 		//numPairedDevices = 0;
 		//discoveredDevices.clear();
+		// TODO instead of delete previous entries, we should check if new paired devices
+		// are found and add them to the persistent list
+		
+		
 		for (int i = 0; i<devices.size(); i++){
 			// update and store paired devices
 			//discoveredDevices.get(i).name = serviceBinder.bluetoothHandler.getRemoteName(discoveredDevices.get(i).address);
 			//discoveredDevices.get(i).state = serviceBinder.bluetoothHandler.isPaired(discoveredDevices.get(i).address) ? BTDevice.PAIRED : BTDevice.NOT_PAIRED;
 			BTDevice d = discoveredDevices.get(i);
+			//we want to see if this device was already paired
+			
+			
 			if (d.state==BTDevice.PAIRED || d.state == BTDevice.CONNECTING || d.state == BTDevice.CONNECTED){
 				edit.putString(KEY_PAIRED_DEVICE_NAME + numPairedDevices, d.name);
 				edit.putString(KEY_PAIRED_DEVICE_ADDRESS + numPairedDevices, d.address);
