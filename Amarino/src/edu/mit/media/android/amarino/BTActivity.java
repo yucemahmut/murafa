@@ -207,17 +207,26 @@ public abstract class BTActivity extends ListActivity
 			//discoveredDevices.get(i).name = serviceBinder.bluetoothHandler.getRemoteName(discoveredDevices.get(i).address);
 			//discoveredDevices.get(i).state = serviceBinder.bluetoothHandler.isPaired(discoveredDevices.get(i).address) ? BTDevice.PAIRED : BTDevice.NOT_PAIRED;
 			BTDevice d = discoveredDevices.get(i);
+			
+			
+			Boolean Existing_Paired_Device = false;
 			//we want to see if this device was already paired
-			
-			
-			if (d.state==BTDevice.PAIRED || d.state == BTDevice.CONNECTING || d.state == BTDevice.CONNECTED){
-				edit.putString(KEY_PAIRED_DEVICE_NAME + numPairedDevices, d.name);
-				edit.putString(KEY_PAIRED_DEVICE_ADDRESS + numPairedDevices, d.address);
-				numPairedDevices++;
+			for (int j=0; i<numPairedDevices; j++){
+				if (d.address == prefs.getString(KEY_PAIRED_DEVICE_ADDRESS + j, ""))
+					Existing_Paired_Device = true;
 			}
+			
+			//now we know if this device was already paired
+			if (Existing_Paired_Device == false){
+				if (d.state==BTDevice.PAIRED || d.state == BTDevice.CONNECTING || d.state == BTDevice.CONNECTED){
+					edit.putString(KEY_PAIRED_DEVICE_NAME + numPairedDevices, d.name);
+					edit.putString(KEY_PAIRED_DEVICE_ADDRESS + numPairedDevices, d.address);
+					numPairedDevices++;
+				}
+			}
+			edit.putInt(KEY_PAIRED_DEVICES_NUM, numPairedDevices);
+			edit.commit();
 		}
-		edit.putInt(KEY_PAIRED_DEVICES_NUM, numPairedDevices);
-		edit.commit();
 	}
 
 	@Override

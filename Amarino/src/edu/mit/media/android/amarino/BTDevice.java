@@ -25,9 +25,9 @@ public class BTDevice {
 	public static final int CONNECTED = 3;
 	public static final int CONNECTING = 4;
 	
-	String address = new String();
-	String name = new String();
-	int state = NOT_PAIRED;
+	public String address = new String();
+	public String name = new String();
+	public int state = NOT_PAIRED;
 	
 	public boolean isPaired(){
 		return state==PAIRED ? true : false;

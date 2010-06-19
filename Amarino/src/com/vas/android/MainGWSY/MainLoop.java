@@ -3,10 +3,22 @@
  */
 package com.vas.android.MainGWSY;
 
+import it.gerdavax.android.bluetooth.BluetoothException;
+
+import java.util.List;
+
 import android.app.Service;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.IBinder;
+import android.util.Log;
+
+import com.vas.android.http_post.ServerPost;
+import com.vas.android.sensors.ScalesKLX349;
+import com.vas.android.user.UserProfile;
+
+import edu.mit.media.android.amarino.BTDevice;
+import edu.mit.media.android.amarino.BTService;
 
 /**
  * @author Volodimir Slobodanuk
@@ -23,6 +35,9 @@ public class MainLoop extends Service {
 	protected  final String BT_PREFS_NAME = "BT_Preferences_Paired_Devices";
 	private  final int NUMBER_OF_PARALLEL_THREADS_TO_BLUETOOTH_DEVICES = 5;
 	
+	static BTService btService;
+	protected static final String List_Of_Available_Devices = "com.vas.android.list_of_available_devices";
+	
 
 	/**
 	 * @return 
@@ -36,6 +51,64 @@ public class MainLoop extends Service {
 		//int numPairedDevices = prefs.getInt(KEY_PAIRED_DEVICES_NUM, 0);
 		
 		//we want to use no more than 5 parallel threads
+		//in the beginning, we have all devices available to try to connect
+		
+		int Number_of_Active_Threads = 0;
+		
+		List device_stack;
+		
+		//lets populate device stack
+		
+		for (int i=0; i<numPairedDevices; i++){
+		
+			device_stack.add(i);
+			
+			}
+		
+		
+		
+		//we want to keep number of active threads equal to 5
+		if (Number_of_Active_Threads < 5){
+			//run new thread to connect to new BT device
+			//identify the next device 
+			
+			
+		}
+		
+		
+
+		for (int i=0; i<numPairedDevices; i++){
+			//measured_weight_previous = 0;
+			BTDevice d = new BTDevice();
+			d.name = prefs.getString(KEY_PAIRED_DEVICE_NAME + i, "");
+			d.address = prefs.getString(KEY_PAIRED_DEVICE_ADDRESS + i, "");
+			d.state = BTDevice.PAIRED;
+			Log.d(TAG, "paired device stored: " + d.name);
+			try {
+				btService.connect(d.address);
+				
+				
+				measured_weight = ScalesKLX349.klx349getData (btService);
+						Log.d(TAG, "measured weight is " + measured_weight);
+						btService.disconnect(true);
+						data_to_send =new Float (measured_weight).toString();
+						data_to_send = data_to_send + Separator + d.address + Separator + d.name + Separator + UserProfile.UserName();
+						
+						ServerPost.sendGWSYdata(data_to_send);
+									
+			} catch (BluetoothException e) {
+				// TODO show error message
+				e.printStackTrace();
+				//return false;
+			} catch (Exception e) {
+				// TODO show error message
+				e.printStackTrace();
+				//return false;
+			}
+		}
+		}	
+		//return true;
+		 
 		
 		
 		
