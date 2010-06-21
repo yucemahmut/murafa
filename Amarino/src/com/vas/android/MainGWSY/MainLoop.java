@@ -5,6 +5,7 @@ package com.vas.android.MainGWSY;
 
 import it.gerdavax.android.bluetooth.BluetoothException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Service;
@@ -38,6 +39,8 @@ public class MainLoop extends Service {
 	static BTService btService;
 	protected static final String List_Of_Available_Devices = "com.vas.android.list_of_available_devices";
 	
+	static BT_Device_Connect bt_device_connect;
+	
 
 	/**
 	 * @return 
@@ -52,25 +55,49 @@ public class MainLoop extends Service {
 		
 		//we want to use no more than 5 parallel threads
 		//in the beginning, we have all devices available to try to connect
-		
+		int device;
+		int current_position;
 		int Number_of_Active_Threads = 0;
 		
-		List device_stack;
 		
-		//lets populate device stack
+		List<Integer> devices_list = new ArrayList<Integer>();
+		
+		//lets populate list of the devices
 		
 		for (int i=0; i<numPairedDevices; i++){
 		
-			device_stack.add(i);
+			devices_list.add(i);
 			
 			}
 		
+		//at the beginning of the loop we start from first element in the devices list
+		current_position = 0;
+		
+		//we will start infinite loop here
 		
 		
 		//we want to keep number of active threads equal to 5
-		if (Number_of_Active_Threads < 5){
+		while (Number_of_Active_Threads < 5 && devices_list.size() > 0){
 			//run new thread to connect to new BT device
-			//identify the next device 
+			//get device index from devices_list
+			
+			device = devices_list.get(current_position);
+			
+			//now we want to do couple of things: launch thread for the device, remove the device from the devices list
+			
+			//launching new thread
+			
+			bt_device_connect.bt_connect(device);
+			
+			//remove this device from the list
+			device = devices_list.remove(current_position);
+			
+			//now we need to handle the devices list
+			//as we removed device from current position, new device is in this position now
+			
+			//increment number of active threads
+			
+			Number_of_Active_Threads++;
 			
 			
 		}
