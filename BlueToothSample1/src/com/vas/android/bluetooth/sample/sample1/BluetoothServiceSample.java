@@ -17,6 +17,7 @@
  */
 package com.vas.android.bluetooth.sample.sample1;
 
+import it.gerdavax.android.bluetooth.BluetoothException;
 import it.gerdavax.android.bluetooth.LocalBluetoothDevice;
 import it.gerdavax.android.bluetooth.LocalBluetoothDeviceListener;
 
@@ -26,16 +27,23 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
 
-public class BluetoothServiceSample extends Activity implements LocalBluetoothDeviceListener {
+public class BluetoothServiceSample extends Activity implements LocalBluetoothDeviceListener, Runnable {
 	private TextView statusTextView;
 	private Button button;
 	private Handler handler = new Handler();
-	private LocalBluetoothDevice localBluetoothDevice;
+	public Handler handler1 = new Handler() {
+		@Override
+		public void handleMessage(Message msg) {
+			dialog.cancel();
+			}
+};
+	private LocalBluetoothDevice localBluetoothDevice ;//= LocalBluetoothDevice.init(this);
 	private ProgressDialog dialog;
 	
 	@Override
@@ -45,49 +53,59 @@ public class BluetoothServiceSample extends Activity implements LocalBluetoothDe
 		setContentView(R.layout.service_sample);
 
 		statusTextView = (TextView) findViewById(R.id.status);
-
+		
+		
+		
 		button = (Button) findViewById(R.id.bluetoothServiceButton);
 		button.setOnClickListener(new OnClickListener() {
 
 			public void onClick(View arg0) {
-				try {
-					if (localBluetoothDevice.isEnabled()) {
+					try {
+						if (localBluetoothDevice.isEnabled()) {
 						//localBluetoothDevice.setEnabled(false);
 						dialog = ProgressDialog.show(BluetoothServiceSample.this, "", "Disabling Bluetooth. Please wait...", true);
-						new Thread() {
-
-							public void run() {
-								try{
-									//sleep(10000);
+						
+						Thread bt_not_enabled_thread = new Thread(){
+							
+							 @Override
+							    public void run() {
+								 try {
 									localBluetoothDevice.setEnabled(false);
-									enabled();
-									} catch (Exception e) {
-										//Log.e("tag", e.getMessage());
-									}
-							}
-						};	
+									setDisabled();
+									handler1.sendEmptyMessage(0);
+								} catch (BluetoothException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								} 
+							 }
+							
+						};
+						bt_not_enabled_thread.start();
+											
 					} else {
 						//localBluetoothDevice.setEnabled(true);
 						dialog = ProgressDialog.show(BluetoothServiceSample.this, "", "Enabling Bluetooth. Please wait...", true);
-						new Thread() {
-
-							public void run() {
-								try{
-									//sleep(10000);
+						
+						Thread bt_is_enabled_thread = new Thread(){
+							
+							 @Override
+							    public void run() {
+								 try {
 									localBluetoothDevice.setEnabled(true);
-									disabled();
-									} catch (Exception e) {
-										//Log.e("tag", e.getMessage());
-									}
-							}
-						};	
+									setEnabled();
+									handler1.sendEmptyMessage(0);
+								} catch (BluetoothException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								} 
+							 }
+							
+						};
+						bt_is_enabled_thread.start();	
 						
-						
-						//localBluetoothDevice.setEnabled(true);
-						//disabled();
 					}
 				} catch (Exception e) {
-					//Log.e("tag", e.getMessage());
+					
 				}
 			}
 
@@ -150,7 +168,6 @@ public class BluetoothServiceSample extends Activity implements LocalBluetoothDe
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-		// Changing this scope to ()
 		localBluetoothDevice.close();
 	}
 
@@ -168,6 +185,12 @@ public class BluetoothServiceSample extends Activity implements LocalBluetoothDe
 
 	@Override
 	public void deviceFound(String deviceAddress) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void run() {
 		// TODO Auto-generated method stub
 		
 	}
