@@ -54,17 +54,40 @@ public class BluetoothServiceSample extends Activity implements LocalBluetoothDe
 					if (localBluetoothDevice.isEnabled()) {
 						//localBluetoothDevice.setEnabled(false);
 						dialog = ProgressDialog.show(BluetoothServiceSample.this, "", "Disabling Bluetooth. Please wait...", true);
-						localBluetoothDevice.setEnabled(false);
-						enabled();
-						
+						new Thread() {
+
+							public void run() {
+								try{
+									//sleep(10000);
+									localBluetoothDevice.setEnabled(false);
+									enabled();
+									} catch (Exception e) {
+										//Log.e("tag", e.getMessage());
+									}
+							}
+						};	
 					} else {
 						//localBluetoothDevice.setEnabled(true);
 						dialog = ProgressDialog.show(BluetoothServiceSample.this, "", "Enabling Bluetooth. Please wait...", true);
-						localBluetoothDevice.setEnabled(true);
-						disabled();
+						new Thread() {
+
+							public void run() {
+								try{
+									//sleep(10000);
+									localBluetoothDevice.setEnabled(true);
+									disabled();
+									} catch (Exception e) {
+										//Log.e("tag", e.getMessage());
+									}
+							}
+						};	
+						
+						
+						//localBluetoothDevice.setEnabled(true);
+						//disabled();
 					}
 				} catch (Exception e) {
-					
+					//Log.e("tag", e.getMessage());
 				}
 			}
 
