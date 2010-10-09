@@ -37,13 +37,15 @@ public class BluetoothServiceSample extends Activity implements LocalBluetoothDe
 	private TextView statusTextView;
 	private Button button;
 	private Handler handler = new Handler();
+	
 	public Handler handler1 = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
 			dialog.cancel();
 			}
-};
-	private LocalBluetoothDevice localBluetoothDevice ;//= LocalBluetoothDevice.init(this);
+	};
+	
+	private LocalBluetoothDevice localBluetoothDevice ;
 	private ProgressDialog dialog;
 	
 	@Override
@@ -105,7 +107,7 @@ public class BluetoothServiceSample extends Activity implements LocalBluetoothDe
 						
 					}
 				} catch (Exception e) {
-					
+					e.printStackTrace();
 				}
 			}
 
@@ -145,20 +147,7 @@ public class BluetoothServiceSample extends Activity implements LocalBluetoothDe
 		});
 	}
 
-	public void disabled() {
-		if (dialog != null) {
-			dialog.cancel();
-		}
-		setDisabled();
-	}
-
-	public void enabled() {
-		if (dialog != null) {
-			dialog.cancel();
-		}
-		setEnabled();
-	}
-
+	
 	public void scanCompleted(ArrayList<String> devices) {
 	}
 
