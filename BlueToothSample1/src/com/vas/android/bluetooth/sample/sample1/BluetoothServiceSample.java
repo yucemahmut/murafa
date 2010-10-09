@@ -28,12 +28,16 @@ import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
 
 public class BluetoothServiceSample extends Activity implements LocalBluetoothDeviceListener, Runnable {
+	
+	private static final String TAG = "BluetoothServiceSample";
+	
 	private TextView statusTextView;
 	private Button button;
 	private Handler handler = new Handler();
@@ -76,11 +80,12 @@ public class BluetoothServiceSample extends Activity implements LocalBluetoothDe
 									setDisabled();
 									
 									try {
-										while(!localBluetoothDevice.isEnabled()){
+										while(localBluetoothDevice.isEnabled()== true){
 										
-										handler1.sendEmptyMessage(0);
+										//handler1.sendEmptyMessage(0);
 										
 										}
+										handler1.sendEmptyMessage(0);
 									} catch (Exception e) {
 										// TODO Auto-generated catch block
 										e.printStackTrace();
@@ -108,11 +113,18 @@ public class BluetoothServiceSample extends Activity implements LocalBluetoothDe
 									localBluetoothDevice.setEnabled(true);
 									setEnabled();
 									try {
-										while(localBluetoothDevice.isEnabled()){
-										
-										handler1.sendEmptyMessage(0);
+										sleep(1000);
+									} catch (InterruptedException e1) {
+										// TODO Auto-generated catch block
+										e1.printStackTrace();
+									}
+									try {
+										while(localBluetoothDevice.isEnabled() == false){
+											Log.e(TAG, String.valueOf(localBluetoothDevice.isEnabled()));
+										sleep (1000);//handler1.sendEmptyMessage(0);
 										
 										}
+										handler1.sendEmptyMessage(0);
 									} catch (Exception e) {
 										// TODO Auto-generated catch block
 										e.printStackTrace();
