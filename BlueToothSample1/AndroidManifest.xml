@@ -13,12 +13,16 @@
 </intent-filter>
         </activity>
 
-    <activity android:label="Bluetooth Service Sample" android:screenOrientation="portrait" android:name="BluetoothServiceSample"><intent-filter><action android:name="com.vas.android.bluetooth.sample.sample1.SERVICE"></action>
+    <activity android:label="Bluetooth Service Sample" android:screenOrientation="portrait" android:name=".BluetoothServiceSample"><intent-filter><action android:name="com.vas.android.bluetooth.sample.sample1.SERVICE"></action>
 <category android:name="android.intent.category.DEFAULT"></category>
 </intent-filter>
 </activity>
 
-<activity android:name="LocalDeviceSample" android:label="LocalDeviceSample" android:screenOrientation="portrait"><intent-filter><action android:name="com.vas.android.bluetooth.sample.LOCAL"></action>
+<activity android:label="LocalDeviceSample" android:screenOrientation="portrait" android:name=".LocalDeviceSample"><intent-filter><action android:name="com.vas.android.bluetooth.sample.LOCAL"></action>
+<category android:name="android.intent.category.DEFAULT"></category>
+</intent-filter>
+</activity>
+<activity android:name=".DeviceDiscoverySample"><intent-filter><action android:name="com.vas.android.bluetooth.sample.DISCOVERY"></action>
 <category android:name="android.intent.category.DEFAULT"></category>
 </intent-filter>
 </activity>
