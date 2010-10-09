@@ -131,10 +131,12 @@ public class BluetoothServiceSample extends Activity implements LocalBluetoothDe
 												} else {
 													localBluetoothDevice.close();
 													try {
-														localBluetoothDevice.initLocalDevice(BluetoothServiceSample.this);
+														LocalBluetoothDevice.initLocalDevice(BluetoothServiceSample.this);
 														localBluetoothDevice.setListener(BluetoothServiceSample.this);
 
 														localBluetoothDevice.setEnabled(true);
+														//stopwatch.stop();
+														stopwatch.start();
 													} catch (Exception e) {
 														e.printStackTrace();
 													}
