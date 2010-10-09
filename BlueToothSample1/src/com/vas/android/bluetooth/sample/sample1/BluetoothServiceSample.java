@@ -111,7 +111,11 @@ public class BluetoothServiceSample extends Activity implements LocalBluetoothDe
 							    public void run() {
 								 try {
 									localBluetoothDevice.setEnabled(true);
-									setEnabled();
+									//we do not want to try to read data indefinitely
+									StopWatch stopwatch = new StopWatch();
+									stopwatch.start();
+									
+									
 									try {
 										sleep(1000);
 									} catch (InterruptedException e1) {
@@ -119,12 +123,27 @@ public class BluetoothServiceSample extends Activity implements LocalBluetoothDe
 										e1.printStackTrace();
 									}
 									try {
-										while(localBluetoothDevice.isEnabled() == false){
-											Log.e(TAG, String.valueOf(localBluetoothDevice.isEnabled()));
-										sleep (1000);//handler1.sendEmptyMessage(0);
-										
-										}
-										handler1.sendEmptyMessage(0);
+										//while (stopwatch.getElapsedTime() < 50000){
+											while(localBluetoothDevice.isEnabled() == false){
+												if (stopwatch.getElapsedTime() < 10000){
+												Log.e(TAG, String.valueOf(localBluetoothDevice.isEnabled()));
+												sleep (1000);//handler1.sendEmptyMessage(0);
+												} else {
+													localBluetoothDevice.close();
+													try {
+														localBluetoothDevice.initLocalDevice(BluetoothServiceSample.this);
+														localBluetoothDevice.setListener(BluetoothServiceSample.this);
+
+														localBluetoothDevice.setEnabled(true);
+													} catch (Exception e) {
+														e.printStackTrace();
+													}
+													
+												}
+											}
+											handler1.sendEmptyMessage(0);
+											setEnabled();
+										//}
 									} catch (Exception e) {
 										// TODO Auto-generated catch block
 										e.printStackTrace();
