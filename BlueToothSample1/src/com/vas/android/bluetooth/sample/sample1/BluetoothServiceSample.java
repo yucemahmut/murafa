@@ -74,7 +74,19 @@ public class BluetoothServiceSample extends Activity implements LocalBluetoothDe
 								 try {
 									localBluetoothDevice.setEnabled(false);
 									setDisabled();
-									handler1.sendEmptyMessage(0);
+									
+									try {
+										while(!localBluetoothDevice.isEnabled()){
+										
+										handler1.sendEmptyMessage(0);
+										
+										}
+									} catch (Exception e) {
+										// TODO Auto-generated catch block
+										e.printStackTrace();
+									}
+									
+									
 								} catch (BluetoothException e) {
 									// TODO Auto-generated catch block
 									e.printStackTrace();
@@ -95,7 +107,16 @@ public class BluetoothServiceSample extends Activity implements LocalBluetoothDe
 								 try {
 									localBluetoothDevice.setEnabled(true);
 									setEnabled();
-									handler1.sendEmptyMessage(0);
+									try {
+										while(localBluetoothDevice.isEnabled()){
+										
+										handler1.sendEmptyMessage(0);
+										
+										}
+									} catch (Exception e) {
+										// TODO Auto-generated catch block
+										e.printStackTrace();
+									}
 								} catch (BluetoothException e) {
 									// TODO Auto-generated catch block
 									e.printStackTrace();
