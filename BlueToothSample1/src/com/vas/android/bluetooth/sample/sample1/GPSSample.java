@@ -17,11 +17,14 @@
  */
 package com.vas.android.bluetooth.sample.sample1;
 
-import it.gerdavax.android.bluetooth.BluetoothDevice;
 import it.gerdavax.android.bluetooth.LocalBluetoothDevice;
 import it.gerdavax.android.bluetooth.LocalBluetoothDeviceListener;
 import it.gerdavax.android.bluetooth.RemoteBluetoothDevice;
+import it.gerdavax.android.bluetooth.RemoteBluetoothDeviceListener;
+import it.gerdavax.android.bluetooth.BluetoothSocket;
 
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 
 import android.app.AlertDialog;
@@ -44,13 +47,15 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 
-public class DeviceDiscoverySample extends ListActivity {
-	private static final String TAG = "DeviceDiscoverySample";
+public class GPSSample extends ListActivity {
+	private static final String TAG = "AndroidBluetoothTest";
+	private StringBuffer buffer = new StringBuffer();
+	private TextView text;
+	private MyThread t, t2;
 	protected LocalBluetoothDevice localBluetoothDevice;
 	protected static ProgressDialog dialog;
 	protected Handler handler = new Handler();
 	protected ArrayList<String> devices;
-	protected AlertDialog deviceInfoDialog;
 
 	protected class DeviceAdapter extends BaseAdapter implements LocalBluetoothDeviceListener {
 
@@ -74,9 +79,9 @@ public class DeviceDiscoverySample extends ListActivity {
 
 			try {
 				if (convertView == null) {
-					feedItem = new LinearLayout(DeviceDiscoverySample.this);
+					feedItem = new LinearLayout(GPSSample.this);
 					String inflater = Context.LAYOUT_INFLATER_SERVICE;
-					LayoutInflater vi = (LayoutInflater) DeviceDiscoverySample.this.getSystemService(inflater);
+					LayoutInflater vi = (LayoutInflater) GPSSample.this.getSystemService(inflater);
 					vi.inflate(R.layout.item, feedItem, true);
 				} else {
 					feedItem = (LinearLayout) convertView;
@@ -89,43 +94,8 @@ public class DeviceDiscoverySample extends ListActivity {
 				String name = "null";
 				String deviceClass = "null";
 				try {
+					deviceClass = "" + localBluetoothDevice.getRemoteClass(address);
 					name = localBluetoothDevice.getRemoteBluetoothDevice(address).getName();
-					//name = "Test Remote Name Line 93 in Device Discovery Sample";
-					System.out.println("Device: " + name);
-					RemoteBluetoothDevice remoteBluetoothDevice = localBluetoothDevice.getRemoteBluetoothDevice(address);
-
-					switch (remoteBluetoothDevice.getDeviceMajorClass()) {
-						case BluetoothDevice.BluetoothClasses.DEVICE_MAJOR_COMPUTER:
-							System.out.println("- This is a computer");
-							break;
-						case BluetoothDevice.BluetoothClasses.DEVICE_MAJOR_PHONE:
-							System.out.println("- This is a phone");
-							break;
-						case BluetoothDevice.BluetoothClasses.DEVICE_MAJOR_IMAGING:
-							System.out.println("- This is an imaging device");
-							break;
-						case BluetoothDevice.BluetoothClasses.DEVICE_MAJOR_PERIPHERAL:
-							System.out.println("- This is an generic peripheral");
-							break;
-						case BluetoothDevice.BluetoothClasses.DEVICE_MAJOR_AV:
-							System.out.println("- This is an AV device");
-							break;
-						default:
-							System.out.println("- This is other");
-							break;
-					}
-
-					switch (remoteBluetoothDevice.getServiceMajorClass()) {
-						case BluetoothDevice.BluetoothClasses.SERVICE_MAJOR_CLASS_POSITION:
-							System.out.println("-- This is a GPS");
-							break;
-						case BluetoothDevice.BluetoothClasses.SERVICE_MAJOR_CLASS_INFORMATION:
-							System.out.println("-- This is an information device");
-							break;
-					}
-					
-					deviceClass = "" + remoteBluetoothDevice.getDeviceClass();
-
 				} catch (Exception e) {
 					e.printStackTrace();
 					name = "ERROR";
@@ -136,9 +106,10 @@ public class DeviceDiscoverySample extends ListActivity {
 				}
 
 				feedTitle.setText(address);
-				deviceNameAndClass.setText(name);
+				deviceNameAndClass.setText(deviceClass);
 
 			} catch (Exception e) {
+				// e.printStackTrace();
 			}
 
 			return feedItem;
@@ -175,7 +146,40 @@ public class DeviceDiscoverySample extends ListActivity {
 		}
 
 		@Override
-		public void deviceFound(String arg0) {
+		public void deviceFound(String deviceAddress) {
+			// TODO Auto-generated method stub
+			
+		}
+
+	}
+
+	private class MyThread extends Thread {
+		boolean halt = false;
+	}
+	
+	private class RemoteBluetoothDeviceEventHandler implements RemoteBluetoothDeviceListener {
+		RemoteBluetoothDevice device;
+
+		public void paired() {
+			// connects to channel 1
+			connectTo(device, 1);
+		}
+
+		public void pinRequested() {
+			Log.d(TAG, "pinRequested()");
+			
+			// does not work as expected. To be investigated...
+			//
+			//Intent intent = new Intent("android.bluetooth.intent.action.PAIRING_REQUEST");
+			//startActivity(intent);
+		}
+
+		public void gotServiceChannel(int serviceID, int channel) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		public void serviceChannelNotAvailable(int serviceID) {
 			// TODO Auto-generated method stub
 			
 		}
@@ -191,33 +195,26 @@ public class DeviceDiscoverySample extends ListActivity {
 		DeviceAdapter adapter = new DeviceAdapter();
 		setListAdapter(adapter);
 
-		try {
-			localBluetoothDevice = LocalBluetoothDevice.initLocalDevice(this);
-
-			if (localBluetoothDevice.isEnabled()) {
-				Log.d(TAG, "Bluetooth is enabled");
-				System.out.println("My address: " + localBluetoothDevice.getAddress());
-
-				localBluetoothDevice.setListener(adapter);
-
-				BlueToothSample1.showDialog(this, R.string.open_dialog_device_discovery);
-
-			} else {
-				BlueToothSample1.showDialog(this, R.string.bluetooth_not_enabled);
-			}
-		} catch (Exception e) {
-		}
-
 		getListView().setOnItemClickListener(new OnItemClickListener() {
 
-			public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
-				try {
-					 //System.out.println("Features: " +
-					 //localBluetoothDevice.getRemoteBluetoothDevice(address).getPosition;
-							 //getRemoteFeatures(devices.get(position)));
+			public void onItemClick(AdapterView<?> adapter, View arg1, int position, long arg3) {
 
-					 //System.out.println("Channel: " +
-					 //localBluetoothDevice.getRemoteServiceChannel(devices.get(position)));
+				final String address = devices.get(position);
+
+				try {
+					AlertDialog.Builder builder = new AlertDialog.Builder(GPSSample.this);
+					builder.setMessage("Do you want to connect to this device?").setCancelable(false).setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int id) {
+							pair(address);
+						}
+					}).setNegativeButton("No", new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int id) {
+							dialog.cancel();
+						}
+					});
+					AlertDialog alert = builder.create();
+					alert.show();
+
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -225,20 +222,130 @@ public class DeviceDiscoverySample extends ListActivity {
 
 		});
 
+		try {
+			localBluetoothDevice = LocalBluetoothDevice.initLocalDevice(this);
+
+			if (localBluetoothDevice.isEnabled()) {
+				localBluetoothDevice.setListener(adapter);
+
+				BlueToothSample1.showDialog(this, R.string.open_dialog_gps);
+				
+			} else {
+				BlueToothSample1.showDialog(this, R.string.bluetooth_not_enabled);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	@Override
+	protected Dialog onCreateDialog(int id) {
+		Dialog dialog = new Dialog(this);
+
+		dialog.setContentView(R.layout.custom_dialog);
+		dialog.setTitle("Connected to BT device");
+
+		text = (TextView) dialog.findViewById(R.id.text);
+		text.setText("(no data)");
+
+		return dialog;
 	}
 
 	@Override
 	protected void onDestroy() {
-		super.onDestroy();
+		super.onPause();
+		System.out.println("PAUSE");
+		
 		localBluetoothDevice.close();
+		
+		/*
+		if (t != null) {
+			t.halt = true;
+		}
+		
+		if (t2 != null) {
+			t2.halt = true;
+		}*/
 	}
 
+	private void pair(String address) {
+		RemoteBluetoothDevice device = localBluetoothDevice.getRemoteBluetoothDevice(address);
+		RemoteBluetoothDeviceEventHandler listener = new RemoteBluetoothDeviceEventHandler();
+		listener.device = device;
+		device.setListener(listener);
+		device.pair();
+	}
+
+	private void connectTo(final RemoteBluetoothDevice device, final int port) {
+		t = new MyThread() {
+			@Override
+			public void run() {
+				try {
+					Log.d(TAG, "Connecting...");
+
+					BluetoothSocket socket = device.openSocket(port);
+
+					InputStream input = socket.getInputStream();
+					OutputStream output = socket.getOutputStream();
+					output.write("TEST".getBytes());
+
+					byte[] buffer = new byte[256];
+					int read;
+					while ((read = input.read(buffer)) != -1 && !halt) {
+						String string = new String(buffer, 0, read);
+						appendString(string);
+					}
+				} catch (Throwable e) {
+					e.printStackTrace();
+				}
+			}
+		};
+		t.start();
+
+		// very bad code... just for demo purpose... :-(
+		t2 = new MyThread() {
+			@Override
+			public void run() {
+				while (true && !halt) {
+					try {
+						sleep(1000);
+						if (text != null && buffer.length() > 0) {
+							handler.post(new Runnable() {
+								public void run() {
+									text.setText(buffer.toString());
+									if (buffer.length() > 3000) {
+										buffer.delete(0, 1000);
+									}
+								}
+							});
+						} else {
+							System.out.println("Text is null!");
+						}
+					} catch (Exception e) {
+
+					}
+				}
+			}
+		};
+		t2.start();
+
+		handler.post(new Runnable() {
+
+			public void run() {
+				showDialog(0);
+			}
+		});
+	}
+
+	private void appendString(String string) {
+		buffer.append(string);
+	}
+	
 	protected void showProgressDialog() {
 		handler.post(new Runnable() {
 			public void run() {
-				dialog = ProgressDialog.show(DeviceDiscoverySample.this, "", "Scanning Bluetooth devices. Please wait...", true);
-
-				System.out.println(dialog);
+				dialog = ProgressDialog.show(GPSSample.this, "", "Scanning Bluetooth devices. Please wait...", true);
 			}
 		});
 	}
@@ -252,7 +359,7 @@ public class DeviceDiscoverySample extends ListActivity {
 			}
 		});
 	}
-
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		menu.add(Menu.NONE, 0, Menu.NONE, "Scan").setIcon(android.R.drawable.ic_menu_search);
@@ -265,32 +372,12 @@ public class DeviceDiscoverySample extends ListActivity {
 			try {
 				localBluetoothDevice.scan();
 			} catch (Exception e) {
-				e.printStackTrace();
+
 			}
 		}
 		return super.onOptionsItemSelected(item);
 	}
+	
+	
 
-	@Override
-	protected Dialog onCreateDialog(int id) {
-		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setMessage("Are you sure you want to exit?").setCancelable(false).setPositiveButton("Close", new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int id) {
-				dialog.cancel();
-			}
-		});
-		
-		deviceInfoDialog= builder.create();
-
-		return deviceInfoDialog;
-	}
-
-	@Override
-	protected void onPrepareDialog(int id, Dialog dialog) {
-		if (dialog == deviceInfoDialog) {
-			deviceInfoDialog.setMessage("");
-		} else {
-			super.onPrepareDialog(id, dialog);
-		}
-	}
 }
