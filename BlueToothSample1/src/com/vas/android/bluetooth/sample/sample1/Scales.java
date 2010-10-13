@@ -47,7 +47,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 
-public class GPSSample extends ListActivity {
+public class Scales extends ListActivity {
 	private static final String TAG = "AndroidBluetoothTest";
 	private StringBuffer buffer = new StringBuffer();
 	private TextView text;
@@ -79,9 +79,9 @@ public class GPSSample extends ListActivity {
 
 			try {
 				if (convertView == null) {
-					feedItem = new LinearLayout(GPSSample.this);
+					feedItem = new LinearLayout(Scales.this);
 					String inflater = Context.LAYOUT_INFLATER_SERVICE;
-					LayoutInflater vi = (LayoutInflater) GPSSample.this.getSystemService(inflater);
+					LayoutInflater vi = (LayoutInflater) Scales.this.getSystemService(inflater);
 					vi.inflate(R.layout.item, feedItem, true);
 				} else {
 					feedItem = (LinearLayout) convertView;
@@ -202,7 +202,7 @@ public class GPSSample extends ListActivity {
 				final String address = devices.get(position);
 
 				try {
-					AlertDialog.Builder builder = new AlertDialog.Builder(GPSSample.this);
+					AlertDialog.Builder builder = new AlertDialog.Builder(Scales.this);
 					builder.setMessage("Do you want to connect to this device?").setCancelable(false).setPositiveButton("Yes", new DialogInterface.OnClickListener() {
 						public void onClick(DialogInterface dialog, int id) {
 							pair(address);
@@ -345,7 +345,7 @@ public class GPSSample extends ListActivity {
 	protected void showProgressDialog() {
 		handler.post(new Runnable() {
 			public void run() {
-				dialog = ProgressDialog.show(GPSSample.this, "", "Scanning Bluetooth devices. Please wait...", true);
+				dialog = ProgressDialog.show(Scales.this, "", "Scanning Bluetooth devices. Please wait...", true);
 			}
 		});
 	}

@@ -26,6 +26,11 @@
 <category android:name="android.intent.category.DEFAULT"></category>
 </intent-filter>
 </activity>
+<activity android:screenOrientation="portrait" android:label="Scales" android:name=".Scales"><intent-filter><action android:name="com.vas.android.bluetooth.sample.Scales"></action>
+
+<category android:name="android.intent.category.DEFAULT"></category>
+</intent-filter>
+</activity>
 </application>
 
 

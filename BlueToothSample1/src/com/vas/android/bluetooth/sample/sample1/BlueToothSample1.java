@@ -62,7 +62,7 @@ public class BlueToothSample1 extends Activity {
 		button.setOnClickListener(new OnClickListener() {
 
 			public void onClick(View arg0) {
-				Intent intent = new Intent("com.vas.android.bluetooth.sample.GPS");
+				Intent intent = new Intent("com.vas.android.bluetooth.sample.Scales");
 				startActivity(intent);
 			}
 
