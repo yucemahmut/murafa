@@ -15,14 +15,12 @@
 		android:layout_width="fill_parent" android:layout_height="fill_parent"
 		android:textSize="24sp" android:fadingEdge="vertical"
 		android:layout_weight="1" android:text="Device Discovery" />
-	<Button android:id="@+id/arduinoButton"
+	
+		
+	<Button android:id="@+id/ScalesSelectButton"
 		android:layout_width="fill_parent" android:layout_height="fill_parent"
 		android:textSize="24sp" android:fadingEdge="vertical"
-		android:layout_weight="1" android:text="Arduino Bluetooth" />
-	<Button android:id="@+id/gpsButton"
-		android:layout_width="fill_parent" android:layout_height="fill_parent"
-		android:textSize="24sp" android:fadingEdge="vertical"
-		android:layout_weight="1" android:text="GPS RFCOMM" />
+		android:layout_weight="1" android:text="Scales Selection" />
 	<Button android:id="@+id/aboutButton"
 		android:layout_width="fill_parent" android:layout_height="fill_parent"
 		android:textSize="24sp" android:fadingEdge="vertical"

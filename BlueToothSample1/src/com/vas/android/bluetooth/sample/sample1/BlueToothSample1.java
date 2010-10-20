@@ -49,16 +49,16 @@ public class BlueToothSample1 extends Activity {
 
 		});
 		
-		button = (Button) findViewById(R.id.arduinoButton);
-		button.setOnClickListener(new OnClickListener() {
+		//button = (Button) findViewById(R.id.arduinoButton);
+		//button.setOnClickListener(new OnClickListener() {
+		//
+		//	public void onClick(View arg0) {
+		//		showDialog(BlueToothSample1.this, R.string.open_dialog_arduino_sample);
+		//	}
 
-			public void onClick(View arg0) {
-				showDialog(BlueToothSample1.this, R.string.open_dialog_arduino_sample);
-			}
-
-		});
+		//});
 		
-		button = (Button) findViewById(R.id.gpsButton);
+		button = (Button) findViewById(R.id.ScalesSelectButton);
 		button.setOnClickListener(new OnClickListener() {
 
 			public void onClick(View arg0) {
