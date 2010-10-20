@@ -3,15 +3,15 @@
     <string name="hello">Hello World, BlueToothSample1!</string>
     <string name="app_name">BlueToothSample1</string>
     
-	<string name="help_samples"><![CDATA[This demo application shows the main features of the experimental Android Bluetooth library. Have fun!]]></string>
+	<string name="help_samples"><![CDATA[This demo application shows the main features of the Scales Sample 1. Have fun!]]></string>
 	<string name="bluetooth_status_enabled">Status: enabled</string>
 	<string name="bluetooth_status_not_enabled">Status: NOT enabled</string>
 	<string name="open_dialog_bluetooth_service_sample"><![CDATA[This activity shows basic interaction with LocalBluetoothDevice: you can enable or disable the phone\'s Bluetooth service. (look at the small Bluetooth icon in the notification area on top of display)]]></string>
 	<string name="open_dialog_local_device_sample"><![CDATA[This activity shows some information about local bluetooth stack: address, friendly name...]]></string>
-	<string name="about_dialog"><![CDATA[(C) 2009 Stefano Sanna \n\n gerdavax@gmail.com \n\n http://www.gerdavax.it]]></string>
+	<string name="about_dialog"><![CDATA[(C) 2010 Volodimir Slobodanuk \n\n volodimir@gmail.com \n\n http://www.vas-i.com]]></string>
 	<string name="bluetooth_not_enabled"><![CDATA[Bluetooth is not enabled: go back to the main menu and enable Bluetooth stack using the first application sample]]></string>
 	<string name="open_dialog_arduino_sample"><![CDATA[Sorry: Arduino Bluetooth sample application is still not ready. It will be available in next release]]></string>
 	<string name="open_dialog_device_discovery"><![CDATA[This activity shows you discovery capability of the Bluetooth stack. Select "Scan" from the system menu to proceed...]]></string>
 	<string name="open_dialog_gps"><![CDATA[This activity demonstrates the RFCOMM feature trying to connect to a Bluetooth GPS (if you have one available). Select "Scan" from the system menu to find Bluetooth devices. Select the GPS device: a dialog will show the NMEA sentences coming from the RFCOMM connection]]></string>
-	<string name="splash"><![CDATA[This application demonstrates the features of the Experimental Android Bluetooth Library. Check it out at: \n\n http://code.google.com/p/android-bluetooth ]]></string>
+	<string name="splash"><![CDATA[This application demonstrates the features of the Scales Sample 1. Check it out at: \n\n http://murafa.googlecode.com ]]></string>
 </resources>
