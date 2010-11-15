@@ -32,7 +32,8 @@ public class ScalesKLX349  {
 	private final static int POUND							=	0;
 	private final static int KILOGRAM						=	1;
 	
-	private static int DEFAULT_METRICS 						=	POUND;
+	//private static int DEFAULT_METRICS 						=	POUND;
+	private static int DEFAULT_METRICS 						=	KILOGRAM;
 	
 	private static float measured_weight_previous 			= 	(float)0;
 	private static float measured_weight_current;

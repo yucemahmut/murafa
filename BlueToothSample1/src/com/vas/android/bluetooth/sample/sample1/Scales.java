@@ -1,4 +1,9 @@
 /*
+ * Copyright (C) 2010 Volodimir Slobodanuk
+ * All rights reserved
+ * 
+ * 
+ * 
  * Copyright (C) 2009 Stefano Sanna
  * 
  * gerdavax@gmail.com - http://www.gerdavax.it
@@ -56,7 +61,7 @@ public class Scales extends ListActivity {
 	private float weight = (float) 0.00;
 	private float weight_max = (float) 0.00;
 	private float weight_immediate = (float) 0.00;;
-	private float weight_previous = (float) 0.00;
+	//private float weight_previous = (float) 0.00;
 	
 	private int MAX_WINDOW_TIME = 5000;
 	private int BUFFER_LENGTH = 255;
@@ -209,7 +214,7 @@ public class Scales extends ListActivity {
 		getListView().setOnItemClickListener(new OnItemClickListener() {
 
 			public void onItemClick(AdapterView<?> adapter, View arg1, int position, long arg3) {
-
+				//Here we want to insert the breakdown....
 				final String address = devices.get(position);
 
 				try {
