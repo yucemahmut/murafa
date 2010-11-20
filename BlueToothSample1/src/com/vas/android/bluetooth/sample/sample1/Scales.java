@@ -38,6 +38,8 @@ import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -54,6 +56,13 @@ import android.widget.AdapterView.OnItemClickListener;
 
 public class Scales extends ListActivity {
 	private static final String TAG = "AndroidBluetoothTest";
+	
+	protected static final String KEY_PAIRED_DEVICES_NUM = "com.vas.android.scales.paired_devices_num";
+	protected static final String KEY_PAIRED_DEVICE_NAME = "com.vas.android.scales.paired_device_name";
+	protected static final String KEY_PAIRED_DEVICE_ADDRESS = "com.vas.android.scales.paired_device_address";
+	
+	
+	
 	private StringBuffer buffer = new StringBuffer();
 	private TextView text;
 	private MyThread t, t2;
@@ -72,6 +81,7 @@ public class Scales extends ListActivity {
 	protected static ProgressDialog dialog;
 	protected Handler handler = new Handler();
 	protected ArrayList<String> devices;
+	protected ArrayList<String> names;
 
 	protected class DeviceAdapter extends BaseAdapter implements LocalBluetoothDeviceListener {
 
@@ -212,16 +222,32 @@ public class Scales extends ListActivity {
 		setListAdapter(adapter);
 
 		getListView().setOnItemClickListener(new OnItemClickListener() {
+			SharedPreferences prefsAddress = getSharedPreferences(KEY_PAIRED_DEVICE_ADDRESS, 0);
+			Editor editAddress = prefsAddress.edit();
+			
+			SharedPreferences prefsName = getSharedPreferences(KEY_PAIRED_DEVICE_NAME, 0);
+			Editor editName = prefsName.edit();
 
 			public void onItemClick(AdapterView<?> adapter, View arg1, int position, long arg3) {
-				//Here we want to insert the breakdown....
+				//Here we want to insert the breakdown....from original program flow.
+				//Basically, we store the address and whatever info we want in the string, and call programm that will run as service
 				final String address = devices.get(position);
 
+				//Once again, we store device address in the string				
+				
+				
 				try {
 					AlertDialog.Builder builder = new AlertDialog.Builder(Scales.this);
 					builder.setMessage("Do you want to connect to this device?").setCancelable(false).setPositiveButton("Yes", new DialogInterface.OnClickListener() {
 						public void onClick(DialogInterface dialog, int id) {
-							pair(address);
+							//Once again, we store device address in the string
+							editAddress.putString(KEY_PAIRED_DEVICE_ADDRESS, address);
+							editAddress.commit();
+							
+							//now we call the service to run it
+							//pair(address);
+							//DeviceSelection();
+							//pair(prefs.getString(KEY_PAIRED_DEVICE_ADDRESS, ""));
 						}
 					}).setNegativeButton("No", new DialogInterface.OnClickListener() {
 						public void onClick(DialogInterface dialog, int id) {
