@@ -55,11 +55,11 @@ import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 
 public class Scales extends ListActivity {
-	private static final String TAG = "AndroidBluetoothTest";
+	public static final String TAG = "AndroidBluetoothTest";
 	
 	protected static final String KEY_PAIRED_DEVICES_NUM = "com.vas.android.scales.paired_devices_num";
-	protected static final String KEY_PAIRED_DEVICE_NAME = "com.vas.android.scales.paired_device_name";
-	protected static final String KEY_PAIRED_DEVICE_ADDRESS = "com.vas.android.scales.paired_device_address";
+	public static final String KEY_PAIRED_DEVICE_NAME = "com.vas.android.scales.paired_device_name";
+	public static final String KEY_PAIRED_DEVICE_ADDRESS = "com.vas.android.scales.paired_device_address";
 	
 	
 	
@@ -82,6 +82,11 @@ public class Scales extends ListActivity {
 	protected Handler handler = new Handler();
 	protected ArrayList<String> devices;
 	protected ArrayList<String> names;
+	
+	private String name = "null";
+	private String deviceClass = "null";
+
+	
 
 	protected class DeviceAdapter extends BaseAdapter implements LocalBluetoothDeviceListener {
 
@@ -117,8 +122,8 @@ public class Scales extends ListActivity {
 				TextView deviceNameAndClass = (TextView) feedItem.findViewById(R.id.name);
 
 				String address = devices.get(position);
-				String name = "null";
-				String deviceClass = "null";
+				//String name = "null";
+				//String deviceClass = "null";
 				try {
 					deviceClass = "" + localBluetoothDevice.getRemoteClass(address);
 					name = localBluetoothDevice.getRemoteBluetoothDevice(address).getName();
@@ -222,10 +227,13 @@ public class Scales extends ListActivity {
 		setListAdapter(adapter);
 
 		getListView().setOnItemClickListener(new OnItemClickListener() {
-			SharedPreferences prefsAddress = getSharedPreferences(KEY_PAIRED_DEVICE_ADDRESS, 0);
-			Editor editAddress = prefsAddress.edit();
 			
 			SharedPreferences prefsName = getSharedPreferences(KEY_PAIRED_DEVICE_NAME, 0);
+
+			SharedPreferences prefsAddress = getSharedPreferences(KEY_PAIRED_DEVICE_ADDRESS, 0);
+			
+			Editor editAddress = prefsAddress.edit();
+			
 			Editor editName = prefsName.edit();
 
 			public void onItemClick(AdapterView<?> adapter, View arg1, int position, long arg3) {
@@ -243,10 +251,16 @@ public class Scales extends ListActivity {
 							//Once again, we store device address in the string
 							editAddress.putString(KEY_PAIRED_DEVICE_ADDRESS, address);
 							editAddress.commit();
+							//We also want to keep name of the device
+							editName.putString(KEY_PAIRED_DEVICE_NAME, name);
+							editName.commit();
 							
 							//now we call the service to run it
+							
 							//pair(address);
+							
 							//DeviceSelection();
+							
 							//pair(prefs.getString(KEY_PAIRED_DEVICE_ADDRESS, ""));
 						}
 					}).setNegativeButton("No", new DialogInterface.OnClickListener() {
